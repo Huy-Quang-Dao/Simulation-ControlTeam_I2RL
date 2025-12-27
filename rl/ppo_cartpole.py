@@ -127,7 +127,7 @@ class Agent(nn.Module):
         return action, probs.log_prob(action), probs.entropy(), self.critic(x)
 
 
-if __name__ == "__main__":
+def main():
     args = tyro.cli(Args)
     args.batch_size = int(args.num_envs * args.num_steps)
     args.minibatch_size = int(args.batch_size // args.num_minibatches)
@@ -349,3 +349,6 @@ if __name__ == "__main__":
     eval_env.close()
     envs.close()
     writer.close()
+
+if __name__ == "__main__":
+    main()

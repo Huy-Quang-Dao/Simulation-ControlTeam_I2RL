@@ -7,7 +7,7 @@ CS_CLEANRL is an easy-to-use reinforcement learning (RL) framework.
 
 ## Installation
 
-1. Generate a new Python virtual environment with Python 3.8 using `conda create -n myenv python=3.8`.
+1. Generate a new Python virtual environment with Python 3.8 using `conda create -n myenv python=3.8` and conda activate myenv.
 
 2. To run experiments locally, give the following a try:
 git clone https://github.com/Huy-Quang-Dao/Simulation-ControlTeam_I2RL && cd Simulation-ControlTeam_I2RL
