@@ -23,6 +23,7 @@ dependencies = [
     "rich<12.0",
     "tenacity>=8.2.2",
     "tyro>=0.5.10",
+    "cvxpy",
 ]
 
 [project.optional-dependencies]
