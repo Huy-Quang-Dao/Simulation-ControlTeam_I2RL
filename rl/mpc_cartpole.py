@@ -10,19 +10,23 @@ import tyro
 from torch.utils.tensorboard import SummaryWriter
 
 
-# ======================
-# Args (CleanRL style)
-# ======================
 @dataclass
 class Args:
     exp_name: str = os.path.basename(__file__)[: -len(".py")]
+    """the name of this experiment"""
     seed: int = 1
-    cuda: bool = False  # unused, keep cleanrl-style
+    """seed of the experiment"""
+    cuda: bool = False  # unused, keep rl-style
+    """if toggled, cuda will be enabled by default"""
     track: bool = False
+    """if toggled, this experiment will be tracked with Weights and Biases"""
     capture_video: bool = True
+    """whether to capture videos of the agent performances (check out `videos` folder)"""
 
     env_id: str = "CartPole-v1"
-    total_timesteps: int = 20000
+    """the id of the environment"""
+    total_timesteps: int = 200
+    """total timesteps of the experiments"""
 
     # MPC specific
     horizon: int = 20
@@ -32,9 +36,6 @@ class Args:
     num_eval_episodes: int = 10
 
 
-# ======================
-# Env factory
-# ======================
 def make_env(env_id, seed, idx, capture_video, run_name):
     def thunk():
         if capture_video and idx == 0:
@@ -51,9 +52,7 @@ def make_env(env_id, seed, idx, capture_video, run_name):
     return thunk
 
 
-# ======================
 # MPC Controller
-# ======================
 class CartPoleMPC:
     def __init__(self, horizon=20, dt=0.02, u_max=20.0):
         self.N = horizon
@@ -161,9 +160,6 @@ class CartPoleMPC:
             return 0.0
 
 
-# ======================
-# Main
-# ======================
 def main():
     args = tyro.cli(Args)
     run_name = f"{args.env_id}__MPC__{args.seed}__{int(time.time())}"
@@ -178,9 +174,7 @@ def main():
     random.seed(args.seed)
     np.random.seed(args.seed)
 
-    # ======================
     # Training env (no learning, just control)
-    # ======================
     envs = gym.vector.SyncVectorEnv(
         [make_env(args.env_id, args.seed, 0, False, run_name)]
     )
@@ -217,9 +211,6 @@ def main():
 
     envs.close()
 
-    # ======================
-    # Evaluation + Video
-    # ======================
     print("\n" + "="*50)
     print("Starting Evaluation...")
     print("="*50)
